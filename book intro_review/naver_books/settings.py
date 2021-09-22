@@ -21,6 +21,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # local apps
     'books',
+    'accounts',
     # 3rd-party library
     'bootstrap5',
     'django.contrib.admin',

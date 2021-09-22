@@ -20,14 +20,18 @@
             <a class="nav-link" href="">Community</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a>
+            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+            {% comment %} <a class="nav-link" href="{% url 'accounts:login' %}" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a> {% endcomment %}
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:signup' %}">Signup</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+  {% comment %} <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -57,7 +61,7 @@
       </div>
     </div>
   </div>
-  
+   {% endcomment %}
   <footer class="d-flex justify-content-center align-items-center fixed-bottom">
     <p class = "p-0">Django Personal PJT, by kwpark</p>
   </footer>
