@@ -1,7 +1,7 @@
   {% load static %}
   <nav class="navbar navbar-dark navbar-expand-md bg-dark sticky-top">
     <div class="container-fluid">
-      <a class="navbar-brand m-0 p-0" href="02_home.html">
+      <a class="navbar-brand m-0 p-0" href="{% url 'books:index' %}">
         <img src="{% static 'images/logo.jpg' %}" alt="Logo Image" width="50em">
       </a>
       
@@ -12,6 +12,9 @@
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'books:index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'books:create' %}">NEW BOOK</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="">Community</a>
