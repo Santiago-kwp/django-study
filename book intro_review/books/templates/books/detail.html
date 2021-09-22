@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>DETAIL</h1>
+<ul>
+  <li>책 제목: {{book.title}}</li>
+  <li>책 저자: {{book.author}}</li>
+  <li>책 내용: {{book.description}}</li>
+  <li>이미지: <img src="{{book.image}}" alt=""></li>
+</ul>
+  <a href="{% url 'books:update' book.pk %}" class='btn btn-primary'>수정</a>
+  <form action="{% url 'books:delete' book.pk %}" method='POST'>
+    {% csrf_token %}
+    <button class="btn btn-danger">delete</button>
+  </form>
+{% endblock  %}

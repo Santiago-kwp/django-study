@@ -25,7 +25,7 @@
   </div>
   {% for book in books %}
     <ul>
-      <li>책 제목: {{book.title}}</li>
+      <li>책 제목: <a href="{% url 'books:detail' book.pk %}">{{book.title}}</a></li>
     </ul>
   {% endfor %}
 {% endblock %}
