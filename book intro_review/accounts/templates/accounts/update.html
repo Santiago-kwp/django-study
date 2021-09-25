@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>회원 정보 수정</h1>
+  <hr>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button class='btn btn-primary'>수정완료</button>
+  </form>
+{% endblock  %}

@@ -19,13 +19,27 @@
           <li class="nav-item">
             <a class="nav-link" href="">Community</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-            {% comment %} <a class="nav-link" href="{% url 'accounts:login' %}" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a> {% endcomment %}
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'accounts:signup' %}">Signup</a>
-          </li>
+          {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:update' %}">회원정보수정</a>
+            </li>
+            <li class="nav-item">
+              <form action="{% url 'accounts:logout' %}" method='POST'>
+                {% csrf_token %}
+                <button class='btn btn-dark'>Logout</button>
+                {% comment %} <input type="submit" value='Logout' class=''> {% endcomment %}
+              </form>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+              {% comment %} <a class="nav-link" href="{% url 'accounts:login' %}" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a> {% endcomment %}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'accounts:signup' %}">Signup</a>
+            </li>
+          {% endif %}
+          
         </ul>
       </div>
     </div>
