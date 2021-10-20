@@ -1,0 +1,25 @@
+<h1>색인 페이지</h1>
+<hr>
+<a href="{% url 'articles:create' %}">글 생성</a>
+<a href="{% url 'accounts:signup' %}">회원가입</a> 
+<a href="{% url 'accounts:login' %}">로그인</a> 
+<a href="{% url 'accounts:logout' %}">로그아웃</a> 
+
+{% for article in articles %}
+  <p>제목: {{article.title}} - {{article.comment_set.all|length}}</p>
+  <p>내용: {{article.content}}</p>
+  <hr>
+
+  <form action="{% url 'articles:comment_create' article.pk %}" method = "POST">'
+    {% csrf_token %}
+    {{ comment_form }}
+    <input type="submit">
+  </form>
+
+  {% for comment in article.comment_set.all %}
+    <li>{{ comment.content }}</li>
+  {% endfor %}
+  <hr>
+  <a href="{% url 'articles:detail' article.pk %}">[DETAIL]</a>
+
+{% endfor %}

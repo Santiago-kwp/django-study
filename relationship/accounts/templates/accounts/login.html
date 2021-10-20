@@ -1,0 +1,7 @@
+<h1>LOGIN</h1>
+<hr>
+<form action="" method="POST">
+  {% csrf_token %}
+  {{form.as_p}}
+  <input type="submit" value="로그인">
+</form>
