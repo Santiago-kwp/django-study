@@ -2,7 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-# from django.contrib.auth.forms import 
+
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash
 

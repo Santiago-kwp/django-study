@@ -53,7 +53,6 @@ urlpatterns = [
     path('books/', include('books.urls')),
     path('accounts/', include('accounts.urls')),
 ]
-
 ```
 
 
@@ -302,14 +301,26 @@ class CustomUserCreationForm(UserCreationForm):
 - `forms.py`에서 지정한 커스터마이징 form import
 - 로그인과 비밀번호 수정을 위해 `AuthenticationForm`과 `PasswordChangeForm`을 import
 - 로그인과 로그아웃 로직 구현을 위해 `django.contrib.auth`에서 `login, logout`을 import 하면서 alias 지정을 통해 기존 이름과의 충돌 방지
-- `UserCreatationForm`의 경우 GET 요청일 경우 인자를 받지 않고, POST일 경우만 request.POST로 인자를 받음
+- `UserCreationForm`의 경우 GET 요청일 경우 인자를 받지 않고, POST일 경우만 request.POST로 인자를 받음
+  - `UserCreationForm`은 `forms.ModelForm`을 상속받음
 - `auth_login`의 인자는 `request`와 `form.save()`의 리턴 값인 `user`를 활용
 - `AuthenticationForm`의 경우 GET 요청일 경우 인자를 받지 않고, POST 요청일 경우 request, request.POST 둘다 인자로 받음
+  - `AuthenticationForm`은 `forms.Form`을 상속 받음
 - 유효성 검사 후 자동 로그인을 위해 `auth_login`의 인자로 `request`와 `form.get_user()` attribute를 활용
 - 로그아웃은 `POST` 요청이고 현재 로그인 중일 때를 `request.user.is_authenticated`를 통해 판별 후 `auth_logout(request)`를 통해 구현
 - 회원정보 수정은 `UserChangeForm`를 사용하여 GET 요청일 경우 `instance=request.user`를 통해 해당 세션 정보를 받아와서 `form`을 통해 넘기고 POST 요청일 경우 `request.POST`인자를 추가함
+- 비밀번호 변경은 `PasswordChangeForm`을 통해 `request.user, request.POST`인자를 받아서 처리하고, `django.contrib.auth`에서 `update_session_auth_hash`를 통해 변경된 패스워드로 세션의 로그인 정보가 갱신되도록 한다.
+- 회원 탈퇴는 POST decorator와 로그인 확인을 한뒤 `request.user.delete()` 를 통해 로그인 세션을 삭제하고 현재 상태에서 탈퇴 후 자동 로그아웃을 `auth_logout(request)`를 통해 구현
 
 ```python
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.views.decorators.http import require_http_methods, require_POST, require_safe
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
+from .forms import CustomUserCreationForm, CustomUserChangeForm
+from django.contrib.auth import login as auth_login, logout as auth_logout, update_session_auth_hash
+
 @require_http_methods(['GET','POST'])
 def signup(request):
     if request.method == 'POST':
@@ -361,6 +372,21 @@ def update(request):
     }
     return render(request, 'accounts/update.html', context)
 
+@login_required
+@require_http_methods(['GET','POST'])
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('books:index')
+    else:
+        form = PasswordChangeForm(request.user)
+    context = {
+        'form':form,
+    }
+    return render(request, 'accounts/password.html', context)
 ```
 
 

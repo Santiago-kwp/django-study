@@ -6,13 +6,13 @@ class BookForm(forms.ModelForm):
         label='책 제목',
         widget = forms.TextInput(
             attrs={
-                'class': 'my-title form-control',
+                'class': 'form-control',
                 'placeholder': '제목을 적어주세요.',
                 'maxlength': 100
             }
         ),
         error_messages = {
-        'required':'제목이 비었습니다.'
+        'required':'제목이 비었습니다.',
             }
     )
     
@@ -43,7 +43,7 @@ class BookForm(forms.ModelForm):
         'required':'내용이 비었습니다.'
             }
     )
-   
+
     class Meta:
         model = Book
         fields = '__all__'
